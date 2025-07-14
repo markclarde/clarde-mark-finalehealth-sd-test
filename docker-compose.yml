@@ -1,20 +1,6 @@
 version: "3.8"
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.frontend
-    ports:
-      - "4200:4200"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    stdin_open: true
-    tty: true
-    depends_on:
-      - backend
-
   backend:
     build:
       context: ./backend
@@ -36,6 +22,19 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+
+  mongo-express:
+    image: mongo-express:1-18-alpine3.19
+    container_name: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin123
+    depends_on:
+      - mongo
 
 volumes:
   mongo-data:
