@@ -20,5 +20,5 @@ cd clarde-mark-finalehealth-sd-test
 - Backend setup: `backend/README.md`
 
 ### 3. API Documentation
-- You can import the Postman collection from `backend/postman/PVMS-API.postman_collection.json`
+- You can import the Postman collection from `postman/PVMS-API.postman_collection.json`
 - 
