@@ -1,0 +1,47 @@
+<div class="container">
+  <h2>Patients</h2>
+
+  <input
+    type="text"
+    [(ngModel)]="searchQuery"
+    (input)="onSearchChange()"
+    placeholder="Search..."
+    class="search-input"
+  />
+
+  <table class="patient-table" *ngIf="patients.length > 0">
+    <thead>
+      <tr>
+        <th>First</th>
+        <th>Last</th>
+        <th>DOB</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let patient of patients">
+        <td>{{ patient.firstName }}</td>
+        <td>{{ patient.lastName }}</td>
+        <td>{{ patient.dob | date }}</td>
+        <td>{{ patient.email }}</td>
+        <td>{{ patient.phoneNumber }}</td>
+        <td>{{ patient.address }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="patients.length === 0">No patients found.</p>
+
+  <div class="pagination">
+    <button (click)="changePage(page - 1)" [disabled]="page === 1">Prev</button>
+    <span>Page {{ page }}</span>
+    <button
+      (click)="changePage(page + 1)"
+      [disabled]="page * limit >= total"
+    >
+      Next
+    </button>
+  </div>
+</div>
