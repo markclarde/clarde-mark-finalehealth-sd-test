@@ -20,8 +20,9 @@ export class PatientsController {
   async getAllPatients(
     @Query('page') page?: number,
     @Query('limit') limit?: number,
+    @Query('search') search?: string
   ) {
-    return this.patientsService.findAll(Number(page) || 1, Number(limit) || 10);
+    return this.patientsService.findAll(Number(page) || 1, Number(limit) || 10, search);
   }
 
   @Post()

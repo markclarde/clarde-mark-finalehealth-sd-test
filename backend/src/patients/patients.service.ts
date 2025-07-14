@@ -18,33 +18,35 @@ export class PatientsService {
     private readonly patientModel: Model<PatientDocument>,
   ) {}
 
-  async findAll(page = 1, limit = 10): Promise<any> {
-    try {
-      const finalLimit = Math.min(limit, 100);
-      const skip = (page - 1) * finalLimit;
+  async findAll(page = 1, limit = 10, search = ''): Promise<any> {
+    const finalLimit = Math.min(limit, 100);
+    const skip = (page - 1) * finalLimit;
 
-      const [patients, total] = await Promise.all([
-        this.patientModel
-          .find({ isDeleted: false })
-          .skip(skip)
-          .limit(finalLimit)
-          .exec(),
-        this.patientModel.countDocuments({ isDeleted: false }),
-      ]);
+    const searchFilter = search
+      ? {
+          $or: [
+            { firstName: { $regex: search, $options: 'i' } },
+            { lastName: { $regex: search, $options: 'i' } },
+            { email: { $regex: search, $options: 'i' } }
+          ]
+        }
+      : {};
 
-      return {
-        message: 'Patients retrieved successfully.',
-        data: patients,
-        meta: {
-          total,
-          page,
-          limit: finalLimit,
-          totalPages: Math.ceil(total / finalLimit),
-        },
-      };
-    } catch (error) {
-      throw new InternalServerErrorException('Failed to retrieve patients. ' + error.message);
-    }
+    const [patients, total] = await Promise.all([
+      this.patientModel.find(searchFilter).skip(skip).limit(finalLimit).exec(),
+      this.patientModel.countDocuments(searchFilter),
+    ]);
+
+    return {
+      message: 'Patients retrieved successfully.',
+      data: patients,
+      meta: {
+        total,
+        page,
+        limit: finalLimit,
+        totalPages: Math.ceil(total / finalLimit),
+      },
+    };
   }
 
   async create(dto: CreatePatientDto): Promise<any> {
