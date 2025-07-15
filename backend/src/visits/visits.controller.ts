@@ -15,17 +15,17 @@ import { UpdateVisitDto } from './dto/update-visit.dto';
 export class VisitsController {
   constructor(private readonly visitsService: VisitsService) {}
 
-  @Get('/patients/:id/visits')
-  getVisitsForPatient(@Param('id') patientId: string) {
-    return this.visitsService.findByPatient(patientId);
-  }
-
   @Post('/patients/:id/visits')
   createVisit(
     @Param('id') patientId: string,
     @Body() dto: Omit<CreateVisitDto, 'patientId'>
   ) {
     return this.visitsService.create({ ...dto, patientId });
+  }
+
+  @Get('/patients/:id/visits')
+  getVisitsForPatient(@Param('id') patientId: string) {
+    return this.visitsService.findByPatient(patientId);
   }
 
   @Put('/visits/:id')

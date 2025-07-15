@@ -3,10 +3,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Visit, VisitSchema } from './schemas/visit.schema';
 import { VisitsController } from './visits.controller';
 import { VisitsService } from './visits.service';
+import { Patient, PatientSchema } from 'src/patients/schemas/patient.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Visit.name, schema: VisitSchema }]),
+    MongooseModule.forFeature(
+      [
+        { name: Visit.name, schema: VisitSchema },
+        { name: Patient.name, schema: PatientSchema }
+      ]
+    ),
   ],
   controllers: [VisitsController],
   providers: [VisitsService],
