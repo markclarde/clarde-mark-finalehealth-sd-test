@@ -1,6 +1,6 @@
 <div class="modal-backdrop">
   <div class="modal-container">
-    <h2>Create Visit</h2>
+    <h2>{{ visitToEdit ? 'Edit Visit' : 'Create Visit' }}</h2>
     <form [formGroup]="form" (ngSubmit)="submitForm()">
       <div class="form-group">
         <label for="visitDate">Visit Date</label>
@@ -23,7 +23,7 @@
       <div class="modal-actions">
         <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
         <button type="submit" class="submit-btn" [disabled]="loading">
-          {{ loading ? 'Saving...' : 'Create Visit' }}
+          {{ loading ? 'Saving...' : 'Confirm' }}
         </button>
       </div>
     </form>

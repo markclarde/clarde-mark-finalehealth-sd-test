@@ -1,8 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { VisitType } from '../../models/visit.model';
+import { Visit, VisitType } from '../../models/visit.model';
 import { VisitService } from '../../services/visit.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'visit-form-modal',
@@ -15,6 +16,7 @@ export class VisitFormModalComponent {
   @Input() patientId!: string;
   @Output() submitted = new EventEmitter<boolean>();
   @Output() cancelled = new EventEmitter<void>();
+  @Input() visitToEdit: Visit | null = null;
 
   form: FormGroup;
   visitTypes = Object.values(VisitType);
@@ -33,17 +35,43 @@ export class VisitFormModalComponent {
 
     this.loading = true;
 
-    this.visitService.createVisit(this.patientId, this.form.value).subscribe({
-      next: () => {
-        this.loading = false;
-        this.submitted.emit(true);
-      },
-      error: (err: any) => {
-        console.error('Failed to create visit:', err);
-        this.loading = false;
-        this.submitted.emit(false);
-      }
-    });
+    if (this.visitToEdit) {
+      this.visitService.updateVisit(this.visitToEdit._id, this.form.value).subscribe({
+        next: () => {
+          this.submitted.emit(true);
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Update failed:', err);
+          this.submitted.emit(false);
+          this.loading = false;
+        }
+      });
+    } else {
+      this.visitService.createVisit(this.patientId, this.form.value).subscribe({
+        next: () => {
+          this.submitted.emit(true);
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Create failed:', err);
+          this.submitted.emit(false);
+          this.loading = false;
+        }
+      });
+    }
+  }
+
+  ngOnChanges(): void {
+    if (this.visitToEdit) {
+      const formattedDate = formatDate(this.visitToEdit.visitDate, 'yyyy-MM-dd', 'en-US');
+
+      this.form.patchValue({
+        visitDate: formattedDate,
+        visitType: this.visitToEdit.visitType,
+        notes: this.visitToEdit.notes
+      });
+    }
   }
 
   cancel() {

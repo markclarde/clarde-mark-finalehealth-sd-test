@@ -21,4 +21,12 @@ export class VisitService {
   getVisitsByPatient(patientId: string): Observable<{ patient: any; visits: Visit[] }> {
     return this.http.get<{ patient: any; visits: Visit[] }>(`${this.baseUrl}patients/${patientId}/visits`);
   }
+
+  updateVisit(visitId: string, data: Partial<Visit>): Observable<Visit> {
+    return this.http.put<Visit>(`${this.baseUrl}visits/${visitId}`, data);
+  }
+
+  deleteVisit(visitId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}visits/${visitId}`);
+  }
 }

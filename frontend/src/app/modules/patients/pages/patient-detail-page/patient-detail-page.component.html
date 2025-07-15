@@ -22,6 +22,7 @@
       <visit-form-modal
         *ngIf="showModal && patient"
         [patientId]="patient.id"
+        [visitToEdit]="editingVisit"
         (submitted)="handleVisitSubmitted($event)"
         (cancelled)="closeVisitModal()"
       ></visit-form-modal>
@@ -34,6 +35,7 @@
             <th>Visit Type</th>
             <th>Visit Date</th>
             <th>Notes</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +43,10 @@
             <td>{{ visit.visitType }}</td>
             <td>{{ visit.visitDate | date: 'mediumDate' }}</td>
             <td>{{ visit.notes || 'No notes' }}</td>
+            <td>
+              <button (click)="openVisitModal(visit)">Edit</button>
+              <button (click)="deleteVisit(visit._id)">Delete</button>
+            </td>
           </tr>
         </tbody>
       </table>
