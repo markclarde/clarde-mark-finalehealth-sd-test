@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PatientService } from '../../services/patient.service';
 import { Patient } from '../../models/patient.model';
+import { Router } from '@angular/router';
 import { PatientFormModalComponent } from '../../components/patient-form-modal/patient-form-modal.component';
 
 @Component({
@@ -23,7 +24,7 @@ export class PatientListPageComponent implements OnInit {
   showModal = false;
   selectedPatient: Patient | null = null;
 
-  constructor(private patientService: PatientService) {}
+  constructor(private patientService: PatientService, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchPatients();
@@ -73,6 +74,10 @@ export class PatientListPageComponent implements OnInit {
     this.selectedPatient = null;
     this.showModal = false;
     this.fetchPatients();
+  }
+
+  onView(id: string): void {
+    this.router.navigate(['/patients', id, 'details']);
   }
 
   onDelete(id: string): void {

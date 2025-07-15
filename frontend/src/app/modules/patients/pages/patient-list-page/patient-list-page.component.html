@@ -40,6 +40,7 @@
           <td>{{ patient.phoneNumber }}</td>
           <td>{{ patient.address }}</td>
           <td class="actions">
+            <button class="view-btn" (click)="onView(patient.id)">View</button>
             <button class="edit-btn" (click)="onEdit(patient)">Edit</button>
             <button class="delete-btn" (click)="onDelete(patient.id)">Delete</button>
           </td>

@@ -1,0 +1,19 @@
+<div class="patient-list-container">
+  <div class="header">
+    <h2>Patient Details</h2>
+  </div>
+
+  <div *ngIf="loading" class="loading">Loading patient details...</div>
+
+  <div *ngIf="!loading && patient" class="patient-details">
+    <p><strong>Name:</strong> {{ patient.firstName }} {{ patient.lastName }}</p>
+    <p><strong>Date of Birth:</strong> {{ patient.dob | date }}</p>
+    <p><strong>Email:</strong> {{ patient.email }}</p>
+    <p><strong>Phone Number:</strong> {{ patient.phoneNumber }}</p>
+    <p><strong>Address:</strong> {{ patient.address }}</p>
+  </div>
+
+  <div *ngIf="!loading && !patient" class="not-found">
+    Patient not found.
+  </div>
+</div>

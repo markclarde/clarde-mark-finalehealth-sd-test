@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PatientsRoutingModule } from './patients-routing.module';
 import { PatientListPageComponent } from './pages/patient-list-page/patient-list-page.component';
+import { PatientDetailPageComponent } from './pages/patient-detail-page/patient-detail-page.component';
 import { PatientFormModalComponent } from './components/patient-form-modal/patient-form-modal.component';
 
 @NgModule({
@@ -16,6 +17,7 @@ import { PatientFormModalComponent } from './components/patient-form-modal/patie
     PatientsRoutingModule,
     PatientListPageComponent,
     PatientFormModalComponent,
+    PatientDetailPageComponent
   ]
 })
 export class PatientsModule { }

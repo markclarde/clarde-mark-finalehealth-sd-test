@@ -19,6 +19,10 @@ export class PatientService {
     return this.http.get(this.apiUrl, { params });
   }
 
+  getPatientById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
+
   createPatient(data: {
     firstName: string;
     lastName: string;
