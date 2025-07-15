@@ -19,6 +19,17 @@ export class PatientService {
     return this.http.get(this.apiUrl, { params });
   }
 
+  createPatient(data: {
+    firstName: string;
+    lastName: string;
+    dob: string;
+    email: string;
+    phoneNumber: string;
+    address: string;
+  }): Observable<any> {
+    return this.http.post(this.apiUrl, data);
+  }
+
   deletePatient(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }

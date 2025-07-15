@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PatientService } from '../../services/patient.service';
 import { Patient } from '../../models/patient.model';
+import { PatientFormModalComponent } from '../../components/patient-form-modal/patient-form-modal.component';
 
 @Component({
   selector: 'app-patient-list-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PatientFormModalComponent],
   templateUrl: './patient-list-page.component.html',
   styleUrls: ['./patient-list-page.component.css']
 })
@@ -19,6 +20,7 @@ export class PatientListPageComponent implements OnInit {
   limit = 10;
   total = 0;
   totalPages = 1;
+  showModal = false;
 
   constructor(private patientService: PatientService) {}
 
@@ -54,6 +56,14 @@ export class PatientListPageComponent implements OnInit {
     if (newPage < 1 || newPage > this.totalPages) return;
     this.page = newPage;
     this.fetchPatients();
+  }
+
+  onCreate(): void {
+    this.showModal = true;
+  }
+
+  onModalClose(): void {
+    this.showModal = false;
   }
 
   onEdit(patient: Patient): void {

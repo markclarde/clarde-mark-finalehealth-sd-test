@@ -8,7 +8,6 @@ import { PatientFormModalComponent } from './components/patient-form-modal/patie
 
 @NgModule({
   declarations: [
-    PatientFormModalComponent,
   ],
   imports: [
     CommonModule,
@@ -16,6 +15,7 @@ import { PatientFormModalComponent } from './components/patient-form-modal/patie
     ReactiveFormsModule,
     PatientsRoutingModule,
     PatientListPageComponent,
+    PatientFormModalComponent,
   ]
 })
 export class PatientsModule { }

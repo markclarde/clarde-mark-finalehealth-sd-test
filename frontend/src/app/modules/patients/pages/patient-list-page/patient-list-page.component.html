@@ -10,8 +10,10 @@
       (input)="onSearchChange()"
       placeholder="Search by name or email"
     />
-    <button class="create-btn">+ Create Patient</button>
+    <button class="create-btn" (click)="onCreate()">+ Create Patient</button>
   </div>
+
+  <app-patient-form-modal *ngIf="showModal" (close)="onModalClose()"></app-patient-form-modal>
 
   <div class="table-section">
     <table *ngIf="!loading && patients.length > 0" class="patient-table">

@@ -1,1 +1,30 @@
-<p>patient-form-modal works!</p>
+<div class="modal-backdrop">
+  <div class="modal-content">
+    <h3>Create Patient</h3>
+
+    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+      <label>First Name</label>
+      <input type="text" formControlName="firstName" />
+
+      <label>Last Name</label>
+      <input type="text" formControlName="lastName" />
+
+      <label>Date of Birth</label>
+      <input type="date" formControlName="dob" />
+
+      <label>Email</label>
+      <input type="email" formControlName="email" />
+
+      <label>Phone Number</label>
+      <input type="text" formControlName="phoneNumber" />
+
+      <label>Address</label>
+      <input type="text" formControlName="address" />
+
+      <div class="actions">
+        <button type="submit">Save</button>
+        <button type="button" (click)="closeModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
