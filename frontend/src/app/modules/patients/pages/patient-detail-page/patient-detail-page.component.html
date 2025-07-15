@@ -1,5 +1,6 @@
 <div class="patient-list-container">
   <div class="header">
+    <button class="back-button" (click)="goBack()">← Back</button>
     <h2>Patient Details</h2>
   </div>
 
@@ -11,6 +12,29 @@
     <p><strong>Email:</strong> {{ patient.email }}</p>
     <p><strong>Phone Number:</strong> {{ patient.phoneNumber }}</p>
     <p><strong>Address:</strong> {{ patient.address }}</p>
+
+    <div class="visits-section">
+      <h3>Visit History</h3>
+
+      <div *ngIf="visits.length === 0">No visits found for this patient.</div>
+
+      <table *ngIf="visits.length > 0" class="visits-table">
+        <thead>
+          <tr>
+            <th>Visit Type</th>
+            <th>Visit Date</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let visit of visits">
+            <td>{{ visit.visitType }}</td>
+            <td>{{ visit.visitDate | date: 'mediumDate' }}</td>
+            <td>{{ visit.notes || 'No notes' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div *ngIf="!loading && !patient" class="not-found">
