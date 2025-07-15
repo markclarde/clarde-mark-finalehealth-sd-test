@@ -12,8 +12,9 @@ import { PatientService } from '../../services/patient.service';
   styleUrls: ['./patient-form-modal.component.css']
 })
 export class PatientFormModalComponent implements OnChanges {
-  @Input() patient: any = null; // 🆕 Input to receive the patient data
+  @Input() patient: any = null;
   @Output() close = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<string>();
 
   patientForm: FormGroup;
 
@@ -47,7 +48,6 @@ export class PatientFormModalComponent implements OnChanges {
     const formData = this.patientForm.value;
 
     if (this.patient && this.patient.id) {
-      // 🆕 Update patient
       this.patientService.updatePatient(this.patient.id, formData).subscribe({
         next: () => {
           alert('Patient updated successfully!');
@@ -69,6 +69,13 @@ export class PatientFormModalComponent implements OnChanges {
           alert('Failed to create patient.');
         }
       });
+    }
+  }
+
+  deletePatient(): void {
+    const confirmDelete = confirm('Are you sure you want to delete this patient?');
+    if (confirmDelete && this.patient?.id) {
+      this.delete.emit(this.patient.id);
     }
   }
 }

@@ -1,6 +1,6 @@
 <div class="modal-backdrop">
   <div class="modal-content">
-    <h3>Create Patient</h3>
+    <h3>{{ patient ? 'Edit' : 'Create' }} Patient</h3>
 
     <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
       <label>First Name</label>
@@ -24,6 +24,15 @@
       <div class="actions">
         <button type="submit">Save</button>
         <button type="button" (click)="closeModal()">Cancel</button>
+
+        <button
+            *ngIf="patient"
+            type="button"
+            class="delete-btn"
+            (click)="deletePatient()"
+            >
+            Delete Patient
+        </button>
       </div>
     </form>
   </div>

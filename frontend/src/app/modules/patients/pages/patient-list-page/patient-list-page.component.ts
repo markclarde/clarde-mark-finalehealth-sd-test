@@ -97,4 +97,21 @@ export class PatientListPageComponent implements OnInit {
       });
     }
   }
+
+  onModalDelete(id: string): void {
+    this.showModal = false;
+    this.loading = true;
+    this.patientService.deletePatient(id).subscribe({
+      next: () => {
+        alert('Patient deleted successfully.');
+        this.selectedPatient = null;
+        this.fetchPatients();
+      },
+      error: (err) => {
+        console.error('Failed to delete patient:', err);
+        alert('An error occurred while deleting the patient.');
+        this.loading = false;
+      }
+    });
+  }
 }
