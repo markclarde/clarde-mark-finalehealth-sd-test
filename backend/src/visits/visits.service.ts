@@ -17,7 +17,7 @@ export class VisitsService {
     @InjectModel(Patient.name) private patientModel: Model<PatientDocument>
   ) {}
 
-  async create(createVisitDto: CreateVisitDto): Promise<Visit> {
+  async create(createVisitDto: CreateVisitDto): Promise<{ message: string; visit: Visit }> {
     const { patientId, ...rest } = createVisitDto;
 
     if (!Types.ObjectId.isValid(patientId)) {
@@ -35,7 +35,11 @@ export class VisitsService {
     });
 
     try {
-      return await visit.save();
+      const savedVisit = await visit.save();
+      return {
+        message: 'Visit created successfully.',
+        visit: savedVisit,
+      };
     } catch (error) {
       console.error('Error saving visit:', error);
       throw new BadRequestException('Failed to create visit. Please try again.');
@@ -54,7 +58,8 @@ export class VisitsService {
 
     try {
       const visits = await this.visitModel.find({
-        patientId: new Types.ObjectId(patientId)
+        patientId: new Types.ObjectId(patientId),
+        isDeleted: false
       }).exec();
 
       return { patient, visits };
@@ -64,22 +69,50 @@ export class VisitsService {
     }
   }
 
-  async update(id: string, updateVisitDto: UpdateVisitDto): Promise<Visit> {
-    const updated = await this.visitModel.findByIdAndUpdate(id, updateVisitDto, {
-      new: true,
-    });
-
-    if (!updated) {
-      throw new NotFoundException(`Visit with ID ${id} not found`);
+  async update(id: string, updateVisitDto: UpdateVisitDto): Promise<{ message: string; visit: Visit }> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Invalid visit ID format.');
     }
 
-    return updated;
+    try {
+      const updated = await this.visitModel.findByIdAndUpdate(id, updateVisitDto, {
+        new: true,
+      });
+
+      if (!updated) {
+        throw new NotFoundException(`Visit with ID ${id} not found.`);
+      }
+
+      return {
+        message: 'Visit updated successfully.',
+        visit: updated,
+      };
+    } catch (error) {
+      console.error(`Failed to update visit with ID ${id}:`, error);
+      throw new BadRequestException('An error occurred while updating the visit.');
+    }
   }
 
-  async remove(id: string): Promise<void> {
-    const result = await this.visitModel.findByIdAndDelete(id);
-    if (!result) {
-      throw new NotFoundException(`Visit with ID ${id} not found`);
+  async remove(id: string): Promise<{ message: string }> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Invalid visit ID format.');
+    }
+
+    try {
+      const result = await this.visitModel.findByIdAndUpdate(
+        id,
+        { isDeleted: true },
+        { new: true }
+      );
+
+      if (!result) {
+        throw new NotFoundException(`Visit with ID ${id} not found.`);
+      }
+
+      return { message: `Visit with ID ${id} deleted successfully.` };
+    } catch (error) {
+      console.error(`Error soft deleting visit with ID ${id}:`, error);
+      throw new BadRequestException('An error occurred while deleting the visit.');
     }
   }
 }

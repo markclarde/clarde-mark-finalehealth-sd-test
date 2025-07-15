@@ -22,6 +22,9 @@ export class Visit {
 
   @Prop({ enum: VisitType, required: true })
   visitType: VisitType;
+
+  @Prop({ default: false })
+  isDeleted: boolean;
 }
 
 export const VisitSchema = SchemaFactory.createForClass(Visit);
