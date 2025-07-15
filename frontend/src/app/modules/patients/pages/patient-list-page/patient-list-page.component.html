@@ -13,7 +13,11 @@
     <button class="create-btn" (click)="onCreate()">+ Create Patient</button>
   </div>
 
-  <app-patient-form-modal *ngIf="showModal" (close)="onModalClose()"></app-patient-form-modal>
+  <app-patient-form-modal
+    *ngIf="showModal"
+    [patient]="selectedPatient"
+    (close)="onModalClose()"
+  ></app-patient-form-modal>
 
   <div class="table-section">
     <table *ngIf="!loading && patients.length > 0" class="patient-table">

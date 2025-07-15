@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,7 +11,8 @@ import { PatientService } from '../../services/patient.service';
   templateUrl: './patient-form-modal.component.html',
   styleUrls: ['./patient-form-modal.component.css']
 })
-export class PatientFormModalComponent {
+export class PatientFormModalComponent implements OnChanges {
+  @Input() patient: any = null; // 🆕 Input to receive the patient data
   @Output() close = new EventEmitter<void>();
 
   patientForm: FormGroup;
@@ -27,13 +28,38 @@ export class PatientFormModalComponent {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['patient'] && this.patient) {
+      this.patientForm.patchValue(this.patient);
+    }
+  }
+
   closeModal(): void {
     this.close.emit();
   }
 
   onSubmit(): void {
-    if (this.patientForm.valid) {
-      this.patientService.createPatient(this.patientForm.value).subscribe({
+    if (this.patientForm.invalid) {
+      this.patientForm.markAllAsTouched();
+      return;
+    }
+
+    const formData = this.patientForm.value;
+
+    if (this.patient && this.patient.id) {
+      // 🆕 Update patient
+      this.patientService.updatePatient(this.patient.id, formData).subscribe({
+        next: () => {
+          alert('Patient updated successfully!');
+          this.close.emit();
+        },
+        error: (err) => {
+          console.error('Update error:', err);
+          alert('Failed to update patient.');
+        }
+      });
+    } else {
+      this.patientService.createPatient(formData).subscribe({
         next: () => {
           alert('Patient created successfully!');
           this.close.emit();
@@ -43,8 +69,6 @@ export class PatientFormModalComponent {
           alert('Failed to create patient.');
         }
       });
-    } else {
-      this.patientForm.markAllAsTouched();
     }
   }
 }

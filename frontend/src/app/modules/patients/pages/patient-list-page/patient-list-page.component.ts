@@ -21,6 +21,7 @@ export class PatientListPageComponent implements OnInit {
   total = 0;
   totalPages = 1;
   showModal = false;
+  selectedPatient: Patient | null = null;
 
   constructor(private patientService: PatientService) {}
 
@@ -59,16 +60,19 @@ export class PatientListPageComponent implements OnInit {
   }
 
   onCreate(): void {
+    this.selectedPatient = null;
+    this.showModal = true;
+  }
+
+  onEdit(patient: Patient): void {
+    this.selectedPatient = patient;
     this.showModal = true;
   }
 
   onModalClose(): void {
+    this.selectedPatient = null;
     this.showModal = false;
-  }
-
-  onEdit(patient: Patient): void {
-    console.log('Editing patient:', patient);
-    // Open modal logic or navigate to edit page can go here
+    this.fetchPatients();
   }
 
   onDelete(id: string): void {
