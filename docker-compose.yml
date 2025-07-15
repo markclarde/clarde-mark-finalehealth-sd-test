@@ -1,19 +1,19 @@
 version: "3.8"
 
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.backend
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-    environment:
-      - MONGO_URI=mongodb://mongo:27017/pvms
-    depends_on:
-      - mongo
+  # backend:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: Dockerfile.backend
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./backend:/app
+  #     - /app/node_modules
+  #   environment:
+  #     - MONGO_URI=mongodb://mongo:27017/pvms
+  #   depends_on:
+  #     - mongo
 
   mongo:
     image: mongo:7
