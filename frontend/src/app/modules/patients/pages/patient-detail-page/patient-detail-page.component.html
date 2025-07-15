@@ -14,7 +14,17 @@
     <p><strong>Address:</strong> {{ patient.address }}</p>
 
     <div class="visits-section">
-      <h3>Visit History</h3>
+      <div class="visits-header">
+        <h3>Visit History</h3>
+        <button class="create-visit-button" (click)="openVisitModal()">+ Create Visit</button>
+      </div>
+
+      <visit-form-modal
+        *ngIf="showModal && patient"
+        [patientId]="patient.id"
+        (submitted)="handleVisitSubmitted($event)"
+        (cancelled)="closeVisitModal()"
+      ></visit-form-modal>
 
       <div *ngIf="visits.length === 0">No visits found for this patient.</div>
 

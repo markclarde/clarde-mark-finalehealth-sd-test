@@ -5,11 +5,12 @@ import { PatientService } from '../../services/patient.service';
 import { Patient } from '../../models/patient.model';
 import { Visit } from '../../../visits/models/visit.model';
 import { Router } from '@angular/router';
+import { VisitFormModalComponent } from '../../../visits/components/visit-form-modal/visit-form-modal.component';
 
 @Component({
   selector: 'app-patient-detail-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, VisitFormModalComponent],
   templateUrl: './patient-detail-page.component.html',
   styleUrls: ['./patient-detail-page.component.css']
 })
@@ -17,6 +18,7 @@ export class PatientDetailPageComponent implements OnInit {
   patient: Patient | null = null;
   visits: Visit[] = [];
   loading = true;
+  showModal = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,6 +27,10 @@ export class PatientDetailPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.patientService.getPatientWithVisits(id).subscribe({
@@ -43,5 +49,20 @@ export class PatientDetailPageComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/patients']);
+  }
+
+  openVisitModal() {
+    this.showModal = true;
+  }
+
+  closeVisitModal() {
+    this.showModal = false;
+  }
+
+  handleVisitSubmitted(success: boolean) {
+    if (success) {
+      this.loadData();
+    }
+    this.closeVisitModal();
   }
 }
