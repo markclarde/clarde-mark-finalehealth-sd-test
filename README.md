@@ -1,6 +1,6 @@
 # Clarde Mark - FinaleHealth SD Test
 
-This is a test project for a **Patient & Visit Management System**, built as part of the Strongwill IT Solutions Junior Software Developer assessment.
+This is a test project for a **Patient & Visit Management System**, built as part of the **Strongwill IT Solutions Junior Software Developer** assessment.
 
 ## Tech Stack
 
