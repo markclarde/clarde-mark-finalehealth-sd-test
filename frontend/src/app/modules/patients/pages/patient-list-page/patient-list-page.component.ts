@@ -1,11 +1,86 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { PatientService } from '../../services/patient.service';
+import { Patient } from '../../models/patient.model';
 
 @Component({
   selector: 'app-patient-list-page',
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './patient-list-page.component.html',
-  styleUrl: './patient-list-page.component.css'
+  styleUrls: ['./patient-list-page.component.css']
 })
-export class PatientListPageComponent {
+export class PatientListPageComponent implements OnInit {
+  patients: Patient[] = [];
+  loading = true;
+  searchQuery = '';
+  page = 1;
+  limit = 10;
+  total = 0;
+  totalPages = 1;
 
+  constructor(private patientService: PatientService) {}
+
+  ngOnInit(): void {
+    this.fetchPatients();
+  }
+
+  fetchPatients(): void {
+    this.loading = true;
+    this.patientService.getPatients(this.page, this.limit, this.searchQuery).subscribe({
+      next: (res) => {
+        this.patients = res.data.map((p: any) => ({
+          ...p,
+          id: p._id
+        }));
+        this.total = res.meta.total;
+        this.totalPages = res.meta.totalPages;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Failed to fetch patients', err);
+        this.loading = false;
+      }
+    });
+  }
+
+  onSearchChange(): void {
+    this.page = 1;
+    this.fetchPatients();
+  }
+
+  changePage(newPage: number): void {
+    if (newPage < 1 || newPage > this.totalPages) return;
+    this.page = newPage;
+    this.fetchPatients();
+  }
+
+  onEdit(patient: Patient): void {
+    console.log('Editing patient:', patient);
+    // Open modal logic or navigate to edit page can go here
+  }
+
+  onDelete(id: string): void {
+    if (!id) {
+      console.warn('Patient ID is required for deletion');
+      return;
+    }
+
+    const confirmDelete = confirm('Are you sure you want to delete this patient?');
+    if (confirmDelete) {
+      this.loading = true;
+      this.patientService.deletePatient(id).subscribe({
+        next: () => {
+          alert('Patient deleted successfully.');
+          this.fetchPatients();
+        },
+        error: (err) => {
+          console.error('Failed to delete patient:', err);
+          alert('An error occurred while deleting the patient.');
+          this.loading = false;
+        }
+      });
+    }
+  }
 }

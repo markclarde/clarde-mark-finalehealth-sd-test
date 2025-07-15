@@ -22,19 +22,19 @@ export class PatientsService {
     const finalLimit = Math.min(limit, 100);
     const skip = (page - 1) * finalLimit;
 
-    const searchFilter = search
-      ? {
-          $or: [
-            { firstName: { $regex: search, $options: 'i' } },
-            { lastName: { $regex: search, $options: 'i' } },
-            { email: { $regex: search, $options: 'i' } }
-          ]
-        }
-      : {};
+    const baseFilter: any = { isDeleted: false };
+
+    if (search) {
+      baseFilter.$or = [
+        { firstName: { $regex: search, $options: 'i' } },
+        { lastName: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } }
+      ];
+    }
 
     const [patients, total] = await Promise.all([
-      this.patientModel.find(searchFilter).skip(skip).limit(finalLimit).exec(),
-      this.patientModel.countDocuments(searchFilter),
+      this.patientModel.find(baseFilter).skip(skip).limit(finalLimit).exec(),
+      this.patientModel.countDocuments(baseFilter),
     ]);
 
     return {

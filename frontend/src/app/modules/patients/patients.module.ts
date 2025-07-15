@@ -8,14 +8,14 @@ import { PatientFormModalComponent } from './components/patient-form-modal/patie
 
 @NgModule({
   declarations: [
-    PatientListPageComponent,
-    PatientFormModalComponent
+    PatientFormModalComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    PatientsRoutingModule
+    PatientsRoutingModule,
+    PatientListPageComponent,
   ]
 })
 export class PatientsModule { }

@@ -1,35 +1,52 @@
 <div class="patient-list-container">
-  <!-- Header Section -->
   <div class="header">
     <h2>Patients</h2>
-    <!-- Placeholder create button (no click binding yet) -->
-    <button class="create-btn">+ Create Patient</button>
   </div>
 
-  <!-- Search Input -->
   <div class="search-section">
     <input
       type="text"
+      [(ngModel)]="searchQuery"
+      (input)="onSearchChange()"
       placeholder="Search by name or email"
     />
+    <button class="create-btn">+ Create Patient</button>
   </div>
 
-  <!-- Patient Table Component Placeholder -->
   <div class="table-section">
-    <p><i>Patient table will go here</i></p>
+    <table *ngIf="!loading && patients.length > 0" class="patient-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>DOB</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th class="actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patient of patients">
+          <td>{{ patient.firstName }} {{ patient.lastName }}</td>
+          <td>{{ patient.dob | date }}</td>
+          <td>{{ patient.email }}</td>
+          <td>{{ patient.phoneNumber }}</td>
+          <td>{{ patient.address }}</td>
+          <td class="actions">
+            <button class="edit-btn" (click)="onEdit(patient)">Edit</button>
+            <button class="delete-btn" (click)="onDelete(patient.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p *ngIf="!loading && patients.length === 0">No patients found.</p>
+    <p *ngIf="loading">Loading...</p>
   </div>
 
-  <!-- Pagination Controls -->
   <div class="pagination">
-    <button disabled>Previous</button>
-    <span>Page 1</span>
-    <button disabled>Next</button>
-  </div>
-
-  <!-- Modal Placeholder -->
-  <div class="modal-backdrop" style="display: none">
-    <div class="modal">
-      <p><i>Patient form modal placeholder</i></p>
-    </div>
+    <button (click)="changePage(page - 1)" [disabled]="page <= 1">Previous</button>
+    <span>Page {{ page }} of {{ totalPages }}</span>
+    <button (click)="changePage(page + 1)" [disabled]="page >= totalPages">Next</button>
   </div>
 </div>
