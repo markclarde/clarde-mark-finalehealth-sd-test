@@ -82,3 +82,9 @@
   margin-bottom: 1rem;
   color: #3f51b5;
 }
+
+.error {
+  color: #d32f2f;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+}

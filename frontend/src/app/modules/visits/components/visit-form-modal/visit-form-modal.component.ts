@@ -4,6 +4,19 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { Visit, VisitType } from '../../models/visit.model';
 import { VisitService } from '../../services/visit.service';
 import { formatDate } from '@angular/common';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
+
+function noPastDateValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const inputDate = new Date(control.value);
+    const today = new Date();
+
+    inputDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    return inputDate < today ? { pastDate: true } : null;
+  };
+}
 
 @Component({
   selector: 'visit-form-modal',
@@ -24,42 +37,35 @@ export class VisitFormModalComponent {
 
   constructor(private fb: FormBuilder, private visitService: VisitService) {
     this.form = this.fb.group({
-      visitDate: ['', Validators.required],
+      visitDate: ['', [Validators.required, noPastDateValidator()]],
       visitType: ['', Validators.required],
       notes: ['']
     });
   }
 
   submitForm() {
-    if (this.form.invalid || !this.patientId) return;
+    if (this.form.invalid || !this.patientId) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     this.loading = true;
 
-    if (this.visitToEdit) {
-      this.visitService.updateVisit(this.visitToEdit._id, this.form.value).subscribe({
-        next: () => {
-          this.submitted.emit(true);
-          this.loading = false;
-        },
-        error: (err) => {
-          console.error('Update failed:', err);
-          this.submitted.emit(false);
-          this.loading = false;
-        }
-      });
-    } else {
-      this.visitService.createVisit(this.patientId, this.form.value).subscribe({
-        next: () => {
-          this.submitted.emit(true);
-          this.loading = false;
-        },
-        error: (err) => {
-          console.error('Create failed:', err);
-          this.submitted.emit(false);
-          this.loading = false;
-        }
-      });
-    }
+    const request$ = this.visitToEdit
+      ? this.visitService.updateVisit(this.visitToEdit._id, this.form.value)
+      : this.visitService.createVisit(this.patientId, this.form.value);
+
+    request$.subscribe({
+      next: () => {
+        this.submitted.emit(true);
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Save failed:', err);
+        this.submitted.emit(false);
+        this.loading = false;
+      }
+    });
   }
 
   ngOnChanges(): void {

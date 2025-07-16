@@ -2,17 +2,25 @@
   <div class="modal-container">
     <h2>{{ visitToEdit ? 'Edit Visit' : 'Create Visit' }}</h2>
     <form [formGroup]="form" (ngSubmit)="submitForm()">
+
       <div class="form-group">
         <label for="visitDate">Visit Date</label>
         <input type="date" id="visitDate" formControlName="visitDate" />
+        <div class="error" *ngIf="form.get('visitDate')?.touched">
+          <div *ngIf="form.get('visitDate')?.hasError('required')">Visit date is required.</div>
+          <div *ngIf="form.get('visitDate')?.hasError('pastDate')">Visit date cannot be in the past.</div>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="visitType">Visit Type</label>
         <select id="visitType" formControlName="visitType">
-          <option value="" disabled selected>Select Type</option>
+          <option value="" disabled>Select Type</option>
           <option *ngFor="let type of visitTypes" [value]="type">{{ type }}</option>
         </select>
+        <div class="error" *ngIf="form.get('visitType')?.touched && form.get('visitType')?.hasError('required')">
+          Visit type is required.
+        </div>
       </div>
 
       <div class="form-group">
