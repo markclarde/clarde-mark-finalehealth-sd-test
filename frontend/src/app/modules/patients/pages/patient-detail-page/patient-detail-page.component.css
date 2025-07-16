@@ -159,20 +159,22 @@ mat-header-cell {
 
 .edit-btn {
   background-color: #fb8c00;
-  color: white;
+  color: white !important;
 }
 
 .edit-btn:hover {
   background-color: #f57c00;
+  color: white !important;
 }
 
 .delete-btn {
   background-color: #e53935;
-  color: white;
+  color: white !important;
 }
 
 .delete-btn:hover {
   background-color: #c62828;
+  color: white !important;
 }
 
 .loading,
