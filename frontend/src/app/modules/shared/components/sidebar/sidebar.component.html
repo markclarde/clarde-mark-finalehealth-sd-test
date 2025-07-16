@@ -1,10 +1,16 @@
-<div class="sidebar">
+<button *ngIf="isMobile" class="sidebar-toggle" (click)="toggleSidebar()">☰</button>
+
+<div class="sidebar" *ngIf="isSidebarVisible" [ngStyle]="{ height: sidebarHeight }">
   <div class="sidebar-header">
     <h2>PVMS</h2>
   </div>
 
   <nav class="sidebar-nav">
-    <a routerLink="/patients" routerLinkActive="active">Patients</a>
-    <a routerLink="/visits" routerLinkActive="active">Visits</a>
+    <a routerLink="/overview" routerLinkActive="active"><span class="icon">🏠</span> Overview</a>
+    <a routerLink="/patients" routerLinkActive="active"><span class="icon">👤</span> Patients</a>
+    <a routerLink="/doctors" routerLinkActive="active"><span class="icon">🩺</span> Doctors</a>
+    <a routerLink="/appointments" routerLinkActive="active"><span class="icon">📅</span> Appointments</a>
+    <a routerLink="/pharmacy" routerLinkActive="active"><span class="icon">💊</span> Pharmacy</a>
+    <a routerLink="/analytics" routerLinkActive="active"><span class="icon">📈</span> Analytics</a>
   </nav>
 </div>

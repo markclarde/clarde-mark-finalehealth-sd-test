@@ -1,40 +1,53 @@
 .sidebar {
-  height: 100vh;
-  width: 200px;
-  background-color: #1e1e2f;
-  color: white;
+  height: vh;
+  width: 240px;
+  background-color: #ffffff;
+  color: #1f1f1f;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1rem 1rem;
+  border-right: 1px solid #e0e0e0;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .sidebar-header {
   margin-bottom: 2rem;
-  text-align: center;
+  text-align: left;
+  padding-left: 0.5rem;
 }
 
 .sidebar-header h2 {
   margin: 0;
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #3f51b5;
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 0.5rem;
+  flex-grow: 1;
 }
 
 .sidebar-nav a {
-  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #333;
   text-decoration: none;
-  font-size: 1rem;
-  padding: 0.5rem;
-  border-radius: 4px;
+  font-size: 0.95rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 6px;
+  transition: background 0.2s;
 }
 
 .sidebar-nav a:hover,
 .sidebar-nav a.active {
-  background-color: #3c3c5a;
+  background-color: #e4e7ff;
+  color: #3f51b5;
+}
+
+.icon {
+  font-size: 1.1rem;
 }
