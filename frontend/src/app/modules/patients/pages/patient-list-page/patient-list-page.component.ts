@@ -5,11 +5,25 @@ import { PatientService } from '../../services/patient.service';
 import { Patient } from '../../models/patient.model';
 import { Router } from '@angular/router';
 import { PatientFormModalComponent } from '../../components/patient-form-modal/patient-form-modal.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-patient-list-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, PatientFormModalComponent],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    PatientFormModalComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTableModule,
+    MatIconModule,
+  ],
   templateUrl: './patient-list-page.component.html',
   styleUrls: ['./patient-list-page.component.css']
 })

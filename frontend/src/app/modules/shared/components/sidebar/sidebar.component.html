@@ -1,16 +1,38 @@
-<button *ngIf="isMobile" class="sidebar-toggle" (click)="toggleSidebar()">☰</button>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #sidenav
+    mode="side"
+    [(opened)]="isSidebarVisible"
+    class="sidenav"
+    [fixedInViewport]="isMobile"
+  >
+    <mat-toolbar class="sidenav-header">PVMS</mat-toolbar>
 
-<div class="sidebar" *ngIf="isSidebarVisible" [ngStyle]="{ height: sidebarHeight }">
-  <div class="sidebar-header">
-    <h2>PVMS</h2>
-  </div>
-
-  <nav class="sidebar-nav">
-    <a routerLink="/overview" routerLinkActive="active"><span class="icon">🏠</span> Overview</a>
-    <a routerLink="/patients" routerLinkActive="active"><span class="icon">👤</span> Patients</a>
-    <a routerLink="/doctors" routerLinkActive="active"><span class="icon">🩺</span> Doctors</a>
-    <a routerLink="/appointments" routerLinkActive="active"><span class="icon">📅</span> Appointments</a>
-    <a routerLink="/pharmacy" routerLinkActive="active"><span class="icon">💊</span> Pharmacy</a>
-    <a routerLink="/analytics" routerLinkActive="active"><span class="icon">📈</span> Analytics</a>
-  </nav>
-</div>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/overview" routerLinkActive="active">
+        <mat-icon>home</mat-icon>
+        <span>Overview</span>
+      </a>
+      <a mat-list-item routerLink="/patients" routerLinkActive="active">
+        <mat-icon>person</mat-icon>
+        <span>Patients</span>
+      </a>
+      <a mat-list-item routerLink="/doctors" routerLinkActive="active">
+        <mat-icon>medical_services</mat-icon>
+        <span>Doctors</span>
+      </a>
+      <a mat-list-item routerLink="/appointments" routerLinkActive="active">
+        <mat-icon>event</mat-icon>
+        <span>Appointments</span>
+      </a>
+      <a mat-list-item routerLink="/pharmacy" routerLinkActive="active">
+        <mat-icon>local_pharmacy</mat-icon>
+        <span>Pharmacy</span>
+      </a>
+      <a mat-list-item routerLink="/analytics" routerLinkActive="active">
+        <mat-icon>insights</mat-icon>
+        <span>Analytics</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+</mat-sidenav-container>

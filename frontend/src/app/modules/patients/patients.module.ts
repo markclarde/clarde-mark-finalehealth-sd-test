@@ -7,10 +7,13 @@ import { PatientListPageComponent } from './pages/patient-list-page/patient-list
 import { PatientDetailPageComponent } from './pages/patient-detail-page/patient-detail-page.component';
 import { PatientFormModalComponent } from './components/patient-form-modal/patient-form-modal.component';
 import { VisitFormModalComponent } from '../visits/components/visit-form-modal/visit-form-modal.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
-  declarations: [
-  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -19,7 +22,12 @@ import { VisitFormModalComponent } from '../visits/components/visit-form-modal/v
     PatientListPageComponent,
     PatientFormModalComponent,
     PatientDetailPageComponent,
-    VisitFormModalComponent
+    VisitFormModalComponent,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
+    MatIconModule,
+    MatButtonModule,
   ]
 })
 export class PatientsModule { }
