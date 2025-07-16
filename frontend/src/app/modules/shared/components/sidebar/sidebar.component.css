@@ -1,10 +1,9 @@
-/* Full layout container */
 .sidenav-container {
   height: 100vh;
   font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
 }
 
-/* Angular Material Sidenav */
 .sidenav {
   width: 240px;
   background-color: #ffffff;
@@ -13,19 +12,23 @@
   border-right: 1px solid #e0e0e0;
   display: flex;
   flex-direction: column;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
 }
 
-/* Toolbar at the top of the sidebar */
 .sidenav-header {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 700;
+  text-align: center;
   color: #3f51b5;
-  padding: 1rem 1.25rem;
+  padding: 1.25rem 1.5rem;
   border-bottom: 1px solid #e0e0e0;
-  text-align: left;
+  background-color: #ffffff;
 }
 
-/* Navigation links */
+mat-nav-list {
+  padding: 0.5rem 0;
+}
+
 mat-nav-list a.mat-list-item {
   display: flex;
   align-items: center;
@@ -33,29 +36,55 @@ mat-nav-list a.mat-list-item {
   color: #333;
   text-decoration: none;
   font-size: 0.95rem;
-  padding: 0.65rem 0.75rem;
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
+  padding: 0.6rem 1rem;
+  border-radius: 2px;
+  margin: 0.25rem 0.5rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Active and hover states */
 mat-nav-list a.active,
 mat-nav-list a.mat-list-item:hover {
-  background-color: #e4e7ff;
+  background-color: #e8ecff;
   color: #3f51b5;
+  font-weight: 600;
 }
 
-/* Icons beside text */
 mat-icon {
-  font-size: 1.1rem;
-  margin-right: 0.5rem;
+  font-size: 1.2rem;
+  vertical-align: middle;
+  color: inherit;
+  transition: color 0.2s ease;
 }
 
-/* Top toolbar for mobile */
 .top-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 1rem;
   font-family: inherit;
+  background-color: #3f51b5;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .sidenav {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+  }
+
+  mat-nav-list a.mat-list-item {
+    justify-content: center;
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+
+  mat-icon {
+    margin-right: 0;
+  }
+
+  .sidenav-header {
+    text-align: center;
+  }
 }
