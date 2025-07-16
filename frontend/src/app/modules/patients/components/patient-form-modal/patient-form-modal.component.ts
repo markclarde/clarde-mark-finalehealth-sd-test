@@ -13,8 +13,8 @@ import { PatientService } from '../../services/patient.service';
 })
 export class PatientFormModalComponent implements OnChanges {
   @Input() patient: any = null;
-  @Output() close = new EventEmitter<void>();
   @Output() delete = new EventEmitter<string>();
+  @Output() close = new EventEmitter<'confirm' | 'cancel'>();
 
   patientForm: FormGroup;
 
@@ -36,7 +36,7 @@ export class PatientFormModalComponent implements OnChanges {
   }
 
   closeModal(): void {
-    this.close.emit();
+    this.close.emit('cancel');
   }
 
   onSubmit(): void {
@@ -50,7 +50,7 @@ export class PatientFormModalComponent implements OnChanges {
     if (this.patient && this.patient.id) {
       this.patientService.updatePatient(this.patient.id, formData).subscribe({
         next: () => {
-          this.close.emit();
+          this.close.emit('confirm');
         },
         error: (err) => {
           console.error('Update error:', err);
@@ -59,7 +59,7 @@ export class PatientFormModalComponent implements OnChanges {
     } else {
       this.patientService.createPatient(formData).subscribe({
         next: () => {
-          this.close.emit();
+          this.close.emit('confirm');
         },
         error: (err) => {
           console.error('Create error:', err);

@@ -88,12 +88,15 @@ export class PatientListPageComponent implements OnInit {
     this.showModal = true;
   }
 
-  onModalClose(): void {
+  onModalClose(eventType: 'confirm' | 'cancel'): void {
     const wasUpdate = !!this.selectedPatient;
     this.selectedPatient = null;
     this.showModal = false;
     this.fetchPatients();
-    this.openSuccessModal(wasUpdate ? 'Patient updated successfully!' : 'Patient created successfully!');
+
+    if (eventType === 'confirm') {
+      this.openSuccessModal(wasUpdate ? 'Patient updated successfully!' : 'Patient created successfully!');
+    }
   }
 
   onView(id: string): void {

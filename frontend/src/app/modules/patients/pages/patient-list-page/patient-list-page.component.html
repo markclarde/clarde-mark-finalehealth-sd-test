@@ -17,7 +17,7 @@
   <app-patient-form-modal
     *ngIf="showModal"
     [patient]="selectedPatient"
-    (close)="onModalClose()"
+    (close)="onModalClose($event)"
     (delete)="onModalDelete($event)"
   ></app-patient-form-modal>
 
