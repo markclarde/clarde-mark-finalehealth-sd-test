@@ -7,11 +7,26 @@ import { Visit } from '../../../visits/models/visit.model';
 import { Router } from '@angular/router';
 import { VisitFormModalComponent } from '../../../visits/components/visit-form-modal/visit-form-modal.component';
 import { VisitService } from '../../../visits/services/visit.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-patient-detail-page',
   standalone: true,
-  imports: [CommonModule, VisitFormModalComponent],
+  imports: [
+    CommonModule, 
+    VisitFormModalComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTableModule,
+    MatIconModule,
+    MatCardModule,
+  ],
   templateUrl: './patient-detail-page.component.html',
   styleUrls: ['./patient-detail-page.component.css']
 })
