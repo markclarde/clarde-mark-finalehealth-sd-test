@@ -13,6 +13,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { SuccessDialogComponent } from '../../../shared/components/success-dialog/success-dialog.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-patient-detail-page',
@@ -26,6 +29,7 @@ import { MatCardModule } from '@angular/material/card';
     MatTableModule,
     MatIconModule,
     MatCardModule,
+    MatDialogModule
   ],
   templateUrl: './patient-detail-page.component.html',
   styleUrls: ['./patient-detail-page.component.css']
@@ -42,6 +46,7 @@ export class PatientDetailPageComponent implements OnInit {
     private patientService: PatientService,
     private router: Router,
     private visitService: VisitService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -79,16 +84,48 @@ export class PatientDetailPageComponent implements OnInit {
   }
 
   handleVisitSubmitted(success: boolean) {
-    if (success) this.loadData();
+    if (success) {
+      this.loadData();
+
+      this.dialog.open(SuccessDialogComponent, {
+        data: {
+          title: this.editingVisit ? 'Visit Updated' : 'Visit Created',
+          message: this.editingVisit
+            ? 'The visit was successfully updated.'
+            : 'The visit was successfully created.'
+        }
+      });
+    }
+
     this.closeVisitModal();
   }
 
   deleteVisit(visitId: string): void {
-    if (confirm('Are you sure you want to delete this visit?')) {
-      this.visitService.deleteVisit(visitId).subscribe({
-        next: () => this.loadData(),
-        error: (err) => console.error('Failed to delete visit:', err)
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Delete Visit',
+        message: 'Are you sure you want to delete this visit?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.visitService.deleteVisit(visitId).subscribe({
+          next: () => {
+            this.dialog.open(SuccessDialogComponent, {
+              data: {
+                title: 'Visit Deleted',
+                message: 'The visit was successfully deleted.'
+              }
+            });
+
+            this.loadData();
+          },
+          error: (err) => {
+            console.error('Failed to delete visit:', err);
+          }
+        });
+      }
+    });
   }
 }
