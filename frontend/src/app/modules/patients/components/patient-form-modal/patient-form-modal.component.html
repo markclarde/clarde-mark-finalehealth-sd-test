@@ -5,21 +5,43 @@
     <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
       <label for="firstName">First Name</label>
       <input id="firstName" type="text" formControlName="firstName" />
+      <div class="error" *ngIf="patientForm.get('firstName')?.touched && patientForm.get('firstName')?.hasError('required')">
+        First name is required.
+      </div>
 
       <label for="lastName">Last Name</label>
       <input id="lastName" type="text" formControlName="lastName" />
+      <div class="error" *ngIf="patientForm.get('lastName')?.touched && patientForm.get('lastName')?.hasError('required')">
+        Last name is required.
+      </div>
 
       <label for="dob">Date of Birth</label>
       <input id="dob" type="date" formControlName="dob" />
+      <div class="error" *ngIf="patientForm.get('dob')?.touched">
+        <div *ngIf="patientForm.get('dob')?.hasError('required')">Date of birth is required.</div>
+        <div *ngIf="patientForm.get('dob')?.hasError('futureDate')">Date of birth cannot be in the future.</div>
+      </div>
 
       <label for="email">Email</label>
       <input id="email" type="email" formControlName="email" />
+      <div class="error" *ngIf="patientForm.get('email')?.touched && patientForm.get('email')?.errors">
+        <div *ngIf="patientForm.get('email')?.hasError('required')">Email is required.</div>
+        <div *ngIf="patientForm.get('email')?.hasError('email')">Enter a valid email.</div>
+        <div *ngIf="patientForm.get('email')?.hasError('emailExists')">A patient with this email already exists.</div>
+      </div>
 
       <label for="phoneNumber">Phone Number</label>
       <input id="phoneNumber" type="text" formControlName="phoneNumber" />
+      <div class="error" *ngIf="patientForm.get('phoneNumber')?.touched">
+        <div *ngIf="patientForm.get('phoneNumber')?.hasError('required')">Phone number is required.</div>
+        <div *ngIf="patientForm.get('phoneNumber')?.hasError('pattern')">Must be a valid PH number (09xxxxxxxxx or +639xxxxxxxxx).</div>
+      </div>
 
       <label for="address">Address</label>
       <input id="address" type="text" formControlName="address" />
+      <div class="error" *ngIf="patientForm.get('address')?.touched && patientForm.get('address')?.hasError('required')">
+        Address is required.
+      </div>
 
       <div class="actions" *ngIf="patient">
         <div class="left-actions">

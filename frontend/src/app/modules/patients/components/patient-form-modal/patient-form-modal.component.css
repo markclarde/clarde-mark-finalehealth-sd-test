@@ -107,3 +107,16 @@ form input:focus {
 .actions .delete-btn:hover {
   background-color: #c62828;
 }
+
+.error {
+  color: #e53935;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border-color: #e53935;
+  background-color: #fff5f5;
+}

@@ -3,6 +3,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PatientService } from '../../services/patient.service';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
+
+// Custom validator: disallow future dates
+function noFutureDateValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const inputDate = new Date(control.value);
+    const today = new Date();
+    return inputDate > today ? { futureDate: true } : null;
+  };
+}
 
 @Component({
   selector: 'app-patient-form-modal',
@@ -22,9 +32,15 @@ export class PatientFormModalComponent implements OnChanges {
     this.patientForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      dob: ['', Validators.required],
+      dob: ['', [Validators.required, noFutureDateValidator()]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', Validators.required],
+      phoneNumber: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^(09\d{9}|\+639\d{9})$/)
+        ]
+      ],
       address: ['', Validators.required]
     });
   }
@@ -47,25 +63,26 @@ export class PatientFormModalComponent implements OnChanges {
 
     const formData = this.patientForm.value;
 
-    if (this.patient && this.patient.id) {
-      this.patientService.updatePatient(this.patient.id, formData).subscribe({
-        next: () => {
-          this.close.emit('confirm');
-        },
-        error: (err) => {
-          console.error('Update error:', err);
+    const request$ = this.patient && this.patient.id
+      ? this.patientService.updatePatient(this.patient.id, formData)
+      : this.patientService.createPatient(formData);
+
+    request$.subscribe({
+      next: () => {
+        this.close.emit('confirm');
+      },
+      error: (err) => {
+        console.error('Submit error:', err);
+
+        if (
+          err?.error?.message &&
+          err.error.message.includes('email') &&
+          err.status === 400
+        ) {
+          this.patientForm.get('email')?.setErrors({ emailExists: true });
         }
-      });
-    } else {
-      this.patientService.createPatient(formData).subscribe({
-        next: () => {
-          this.close.emit('confirm');
-        },
-        error: (err) => {
-          console.error('Create error:', err);
-        }
-      });
-    }
+      }
+    });
   }
 
   deletePatient(): void {
