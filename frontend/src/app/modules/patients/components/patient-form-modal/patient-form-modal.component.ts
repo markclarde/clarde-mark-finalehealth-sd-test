@@ -50,31 +50,26 @@ export class PatientFormModalComponent implements OnChanges {
     if (this.patient && this.patient.id) {
       this.patientService.updatePatient(this.patient.id, formData).subscribe({
         next: () => {
-          alert('Patient updated successfully!');
           this.close.emit();
         },
         error: (err) => {
           console.error('Update error:', err);
-          alert('Failed to update patient.');
         }
       });
     } else {
       this.patientService.createPatient(formData).subscribe({
         next: () => {
-          alert('Patient created successfully!');
           this.close.emit();
         },
         error: (err) => {
           console.error('Create error:', err);
-          alert('Failed to create patient.');
         }
       });
     }
   }
 
   deletePatient(): void {
-    const confirmDelete = confirm('Are you sure you want to delete this patient?');
-    if (confirmDelete && this.patient?.id) {
+    if (this.patient?.id) {
       this.delete.emit(this.patient.id);
     }
   }

@@ -10,6 +10,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { SuccessDialogComponent } from '../../../shared/components/success-dialog/success-dialog.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-patient-list-page',
@@ -39,7 +42,7 @@ export class PatientListPageComponent implements OnInit {
   selectedPatient: Patient | null = null;
   displayedColumns: string[] = ['name', 'dob', 'email', 'phone', 'address', 'actions'];
 
-  constructor(private patientService: PatientService, private router: Router) {}
+  constructor(private patientService: PatientService, private router: Router, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.fetchPatients();
@@ -86,9 +89,11 @@ export class PatientListPageComponent implements OnInit {
   }
 
   onModalClose(): void {
+    const wasUpdate = !!this.selectedPatient;
     this.selectedPatient = null;
     this.showModal = false;
     this.fetchPatients();
+    this.openSuccessModal(wasUpdate ? 'Patient updated successfully!' : 'Patient created successfully!');
   }
 
   onView(id: string): void {
@@ -96,42 +101,57 @@ export class PatientListPageComponent implements OnInit {
   }
 
   onDelete(id: string): void {
-    if (!id) {
-      console.warn('Patient ID is required for deletion');
-      return;
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: { message: 'Are you sure you want to delete this patient?' },
+      width: '350px'
+    });
 
-    const confirmDelete = confirm('Are you sure you want to delete this patient?');
-    if (confirmDelete) {
-      this.loading = true;
-      this.patientService.deletePatient(id).subscribe({
-        next: () => {
-          alert('Patient deleted successfully.');
-          this.fetchPatients();
-        },
-        error: (err) => {
-          console.error('Failed to delete patient:', err);
-          alert('An error occurred while deleting the patient.');
-          this.loading = false;
-        }
-      });
-    }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loading = true;
+        this.patientService.deletePatient(id).subscribe({
+          next: () => {
+            this.openSuccessModal('Patient deleted successfully!');
+            this.fetchPatients();
+          },
+          error: (err) => {
+            console.error('Failed to delete patient:', err);
+            this.loading = false;
+          }
+        });
+      }
+    });
   }
 
   onModalDelete(id: string): void {
-    this.showModal = false;
-    this.loading = true;
-    this.patientService.deletePatient(id).subscribe({
-      next: () => {
-        alert('Patient deleted successfully.');
-        this.selectedPatient = null;
-        this.fetchPatients();
-      },
-      error: (err) => {
-        console.error('Failed to delete patient:', err);
-        alert('An error occurred while deleting the patient.');
-        this.loading = false;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: { message: 'Are you sure you want to delete this patient?' },
+      width: '350px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.showModal = false;
+        this.loading = true;
+        this.patientService.deletePatient(id).subscribe({
+          next: () => {
+            this.openSuccessModal('Patient deleted successfully!');
+            this.selectedPatient = null;
+            this.fetchPatients();
+          },
+          error: (err) => {
+            console.error('Failed to delete patient:', err);
+            this.loading = false;
+          }
+        });
       }
+    });
+  }
+
+  openSuccessModal(message: string): void {
+    this.dialog.open(SuccessDialogComponent, {
+      data: { message },
+      width: '350px'
     });
   }
 }

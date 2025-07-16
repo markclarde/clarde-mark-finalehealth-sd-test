@@ -8,6 +8,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { SuccessDialogComponent } from './components/success-dialog/success-dialog.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [SidebarComponent],
@@ -20,7 +23,10 @@ import { MatButtonModule } from '@angular/material/button';
     MatListModule,
     MatIconModule,
     MatButtonModule,
+    MatDialogModule,
+    SuccessDialogComponent,
+    ConfirmDialogComponent
   ],
-  exports: [SidebarComponent]
+  exports: [SidebarComponent, SuccessDialogComponent]
 })
 export class SharedModule {}
