@@ -1,42 +1,58 @@
 .patient-list-container {
   max-width: 100%;
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 12px;
-  background-color: #fff;
+  background-color: #ffffff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow-x: auto;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.header h2 {
+  font-size: 1.5rem;
+  color: #3f51b5;
+  margin: 0;
 }
 
 .search-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 1rem 0;
+  margin-bottom: 1.25rem;
   gap: 1rem;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .search-section input {
-  flex: 1;
-  max-width: 300px;
-  padding: 0.5rem;
+  flex: 1 1 250px;
+  min-width: 200px;
+  padding: 0.5rem 1rem;
   border: 1px solid #ccc;
   border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
 }
 
 .search-section .create-btn {
-  padding: 0.5rem 1rem;
-  border: none;
+  padding: 0.5rem 1.25rem;
   background-color: #3f51b5;
   color: white;
+  border: none;
   border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
   cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .search-section .create-btn:hover {
@@ -44,46 +60,104 @@
 }
 
 .table-section {
-  overflow-x: hidden;
+  width: 100%;
+  overflow-x: auto;
+  font-family: inherit;
 }
 
 .patient-table {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  font-family: inherit;
 }
 
 .patient-table th,
 .patient-table td {
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   text-align: left;
   border-bottom: 1px solid #ddd;
-  overflow: hidden;
   white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.patient-table td:nth-child(3),
-.patient-table td:nth-child(5) {
-  max-width: 200px;
 }
 
 .patient-table th {
   background-color: #f5f5f5;
-  font-weight: bold;
+  font-weight: 600;
+  color: #333;
+}
+
+.patient-table thead th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.patient-table thead th:last-child {
+  border-top-right-radius: 12px;
 }
 
 .patient-table tr:hover {
   background-color: #f0f0f0;
 }
 
+.actions {
+  white-space: nowrap;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actions button {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-family: inherit;
+}
+
+.view-btn {
+  background-color: #2196f3;
+  color: white;
+}
+.view-btn:hover {
+  background-color: #1976d2;
+}
+
+.edit-btn {
+  background-color: #ffc107;
+  color: black;
+}
+.edit-btn:hover {
+  background-color: #ffb300;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+.table-section p {
+  margin: 1rem 0;
+  text-align: center;
+  color: #777;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
 .pagination {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
+  font-family: inherit;
 }
 
 .pagination button {
@@ -92,7 +166,14 @@
   background-color: #3f51b5;
   color: white;
   border-radius: 6px;
+  font-size: 0.9rem;
   cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.2s ease;
+}
+
+.pagination button:hover {
+  background-color: #303f9f;
 }
 
 .pagination button[disabled] {
@@ -102,16 +183,22 @@
 
 .pagination span {
   font-weight: bold;
+  font-size: 0.95rem;
 }
 
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
   }
 
-  .search-section input {
+  .search-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-section input,
+  .search-section .create-btn {
     width: 100%;
   }
 
@@ -119,5 +206,14 @@
   .patient-table td {
     padding: 0.5rem;
     font-size: 0.9rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .pagination {
+    flex-direction: column;
   }
 }
