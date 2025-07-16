@@ -37,6 +37,7 @@ export class PatientListPageComponent implements OnInit {
   totalPages = 1;
   showModal = false;
   selectedPatient: Patient | null = null;
+  displayedColumns: string[] = ['name', 'dob', 'email', 'phone', 'address', 'actions'];
 
   constructor(private patientService: PatientService, private router: Router) {}
 
