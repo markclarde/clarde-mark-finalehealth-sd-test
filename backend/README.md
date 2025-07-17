@@ -1,30 +1,48 @@
-# Backend - Patient & Visit Management System
+# Backend Setup Guide
 
-This is the **backend API** built with **NestJS** and **MongoDB** for managing patients and their visits. It is part of the `clarde-mark-finalehealth-sd-test` project.
+This guide outlines the steps to set up and run the backend of the **PVMS** in development mode.
 
-## 🚀 Setup Instructions
+## Prerequisites
 
-### 1. Install Dependencies
+Ensure you have the following installed:
+- [Node.js](https://nodejs.org/) (v16 or later)
+- [NestJS CLI](https://docs.nestjs.com/cli/overview)
+- Docker (MongoDB container must be running — see main project README for setup)
 
+## Getting Started
+
+### 1. Navigate to the Backend Directory
+```
+cd backend
+```
+
+### 2. Install Dependencies
 ```
 npm install
 ```
 
-### 2. Create `.env` File
-
-- Create a `.env` file in the root of the `backend/` directory:
-
+### 3. Ensure MongoDB Docker Container Is Running
+- Make sure your MongoDB container is up and running before starting the backend.
+- Docker installation and container setup are detailed in the root project's main `README.md`.
+- If so, you can access Mongo Express at:
 ```
-MONGO_URI=mongodb://localhost:27017/finalehealth
-PORT=3000
+http://localhost:8081/
 ```
 
-- Make sure your MongoDB server is running locally (or change the `MONGO_URI` as needed).
+### 4. Set Up Environment Variables
+- Create a `.env` file based on the example:
+```
+cp .env.example .env
+```
 
-### 2. Run the Server (Dev Mode)
-
+### 4. Run the Backend Application
 ```
 npm run start:dev
 ```
+- This starts the backend in development mode with hot-reloading.
 
-- Server will be running at: http://localhost:3000
+## API Access
+- Once running, access the backend API at:
+```
+http://localhost:3000/
+```
