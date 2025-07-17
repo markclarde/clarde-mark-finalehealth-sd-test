@@ -19,6 +19,7 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { PatientFormModalComponent } from '../../components/patient-form-modal/patient-form-modal.component';
 
 @Component({
   selector: 'app-patient-detail-page',
@@ -32,7 +33,8 @@ import { switchMap, takeUntil, tap } from 'rxjs/operators';
     MatTableModule,
     MatIconModule,
     MatCardModule,
-    MatDialogModule
+    MatDialogModule,
+    PatientFormModalComponent
   ],
   templateUrl: './patient-detail-page.component.html',
   styleUrls: ['./patient-detail-page.component.css']
@@ -43,6 +45,7 @@ export class PatientDetailPageComponent implements OnInit {
   loading = true;
   showModal = false;
   editingVisit: Visit | null = null;
+  showEditPatientModal = false;
 
   private destroy$ = new Subject<void>();
   private loadTrigger$ = new Subject<string>();
@@ -96,6 +99,52 @@ export class PatientDetailPageComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/patients']);
+  }
+
+  editPatient(): void {
+    this.showEditPatientModal = true;
+  }
+
+  handleEditPatientClosed(action: 'confirm' | 'cancel') {
+    this.showEditPatientModal = false;
+    if (action === 'confirm') {
+      this.loadData();
+      this.dialog.open(SuccessDialogComponent, {
+        data: {
+          title: 'Patient Updated',
+          message: 'Patient information was successfully updated.'
+        }
+      });
+    }
+  }
+
+  handleDeletePatient(patientId: string): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Delete Patient',
+        message: 'Are you sure you want to delete this patient?\nThis action cannot be undone.'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.patientService.deletePatient(patientId).subscribe({
+          next: () => {
+            this.dialog.open(SuccessDialogComponent, {
+              data: {
+                title: 'Patient Deleted',
+                message: 'The patient record has been successfully deleted.'
+              }
+            });
+
+            this.router.navigate(['/patients']);
+          },
+          error: (err) => {
+            console.error('Failed to delete patient:', err);
+          }
+        });
+      }
+    });
   }
 
   openVisitModal(visit: Visit | null = null) {

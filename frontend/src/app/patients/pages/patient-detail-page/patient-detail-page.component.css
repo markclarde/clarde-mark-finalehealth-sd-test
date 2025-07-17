@@ -38,6 +38,16 @@
   text-decoration: none;
 }
 
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit-personal-btn {
+  margin-left: auto;
+}
+
 .patient-details-card {
   margin-bottom: 2rem;
   background-color: #f9fbfc;

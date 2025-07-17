@@ -7,7 +7,12 @@
   <div *ngIf="loading" class="loading">Loading patient details...</div>
 
   <mat-card *ngIf="!loading && patient" class="patient-details-card">
-    <mat-card-title>Personal Information</mat-card-title>
+    <mat-card-title class="info-header">
+      <span>Personal Information</span>
+      <button mat-icon-button color="primary" (click)="editPatient()" class="edit-personal-btn" aria-label="Edit">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </mat-card-title>
     <mat-card-content class="patient-details-grid">
       <div class="detail-item"><strong>Name:</strong> {{ patient.firstName }} {{ patient.lastName }}</div>
       <div class="detail-item"><strong>Date of Birth:</strong> {{ patient.dob | date }}</div>
@@ -30,6 +35,12 @@
       (submitted)="handleVisitSubmitted($event)"
       (cancelled)="closeVisitModal()"
     ></visit-form-modal>
+    <app-patient-form-modal
+      *ngIf="showEditPatientModal"
+      [patient]="patient"
+      (close)="handleEditPatientClosed($event)"
+      (delete)="handleDeletePatient($event)"
+    ></app-patient-form-modal>
 
     <p *ngIf="visits.length === 0">No visits found for this patient.</p>
 
