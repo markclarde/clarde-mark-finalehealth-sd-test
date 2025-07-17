@@ -6,6 +6,7 @@ import {
   Delete,
   Param,
   Body,
+  Query,
 } from '@nestjs/common';
 import { VisitsService } from './visits.service';
 import { CreateVisitDto } from './dto/create-visit.dto';
@@ -24,8 +25,12 @@ export class VisitsController {
   }
 
   @Get('/patients/:id/visits')
-  getVisitsForPatient(@Param('id') patientId: string) {
-    return this.visitsService.findByPatient(patientId);
+  getVisitsForPatient(
+    @Param('id') patientId: string,
+    @Query('page') page = '1'
+  ) {
+    const pageNumber = parseInt(page, 10);
+    return this.visitsService.findByPatient(patientId, pageNumber);
   }
 
   @Put('/visits/:id')

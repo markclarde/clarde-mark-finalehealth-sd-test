@@ -46,7 +46,12 @@ export class VisitsService {
     }
   }
 
-  async findByPatient(patientId: string): Promise<{ patient: Patient; visits: Visit[] }> {
+  async findByPatient(patientId: string, page = 1, limit = 8): Promise<{
+    patient: Patient;
+    visits: Visit[];
+    totalVisits: number;
+    totalPages: number;
+  }> {
     if (!Types.ObjectId.isValid(patientId)) {
       throw new BadRequestException('Invalid patient ID format.');
     }
@@ -57,12 +62,20 @@ export class VisitsService {
     }
 
     try {
-      const visits = await this.visitModel.find({
+      const filter = {
         patientId: new Types.ObjectId(patientId),
-        isDeleted: false
-      }).exec();
+        isDeleted: false,
+      };
 
-      return { patient, visits };
+      const totalVisits = await this.visitModel.countDocuments(filter);
+      const totalPages = Math.ceil(totalVisits / limit);
+      const visits = await this.visitModel
+        .find(filter)
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .exec();
+
+      return { patient, visits, totalVisits, totalPages };
     } catch (error) {
       console.error('Error retrieving visits for patient:', error);
       throw new BadRequestException('Failed to retrieve visits. Please try again.');
