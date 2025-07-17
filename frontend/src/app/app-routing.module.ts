@@ -10,7 +10,7 @@ const routes: Routes = [
   {
     path: 'patients',
     loadChildren: () =>
-      import('./modules/patients/patients.module').then(m => m.PatientsModule)
+      import('./patients/patients.module').then(m => m.PatientsModule)
   },
   // other routes...
 ];
