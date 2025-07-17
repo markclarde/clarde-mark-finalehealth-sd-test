@@ -1,209 +1,255 @@
 {
-  "info": {
-    "_postman_id": "a6d265fc-983b-46ad-98ef-a1ca03bc7707",
-    "name": "PVMS API",
-    "description": "Test API for managing patients and visits",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "30890091"
-  },
-  "item": [
-    {
-      "name": "Patients",
-      "item": [
-        {
-          "name": "Get All Patients",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:3000/patients",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["patients"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create Patient",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"firstName\": \"Mark\",\n  \"lastName\": \"Clarde\",\n  \"dob\": \"1990-05-10\",\n  \"email\": \"mark@example.com\",\n  \"phoneNumber\": \"09123456789\",\n  \"address\": \"Davao City\"\n}"
-            },
-            "url": {
-              "raw": "http://localhost:3000/patients",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["patients"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update Patient",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"firstName\": \"UpdatedMark\",\n  \"lastName\": \"Clarde\",\n  \"email\": \"mark_updated@example.com\"\n}"
-            },
-            "url": {
-              "raw": "http://localhost:3000/patients/:id",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["patients", ":id"],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": ""
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete Patient",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:3000/patients/:id",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["patients", ":id"],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": ""
-                }
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Visits",
-      "item": [
-        {
-          "name": "Create Visit",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"visitDate\": \"2025-07-14T10:00:00.000Z\",\n  \"visitType\": \"Clinic\",\n  \"notes\": \"Initial checkup\"\n}"
-            },
-            "url": {
-              "raw": "http://localhost:3000/patients/:patientId/visits",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["patients", ":patientId", "visits"],
-              "variable": [
-                {
-                  "key": "patientId"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update Visit",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"notes\": \"Follow-up visit\",\n  \"visitType\": \"Telehealth\"\n}"
-            },
-            "url": {
-              "raw": "http://localhost:3000/visits/:visitId",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["visits", ":visitId"],
-              "variable": [
-                {
-                  "key": "visitId"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get Visits of a Patient",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:3000/patients/:patientId/visits",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["patients", ":patientId", "visits"],
-              "variable": [
-                {
-                  "key": "patientId"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete Visit",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:3000/visits/:visitId",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["visits", ":visitId"],
-              "variable": [
-                {
-                  "key": "visitId"
-                }
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    }
-  ]
+	"info": {
+		"_postman_id": "a6d265fc-983b-46ad-98ef-a1ca03bc7707",
+		"name": "PVMS-API",
+		"description": "Test API for managing patients and visits",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30890091",
+		"_collection_link": "https://www.postman.com/markclarde/workspace/clarde-mark-finalehealth-sd-test/collection/30890091-a6d265fc-983b-46ad-98ef-a1ca03bc7707?action=share&source=collection_link&creator=30890091"
+	},
+	"item": [
+		{
+			"name": "Patients",
+			"item": [
+				{
+					"name": "Get All Patients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/patients/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"patients",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Patient",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Mark\",\n  \"lastName\": \"Clarde\",\n  \"dob\": \"1990-05-10\",\n  \"email\": \"mark@example.com\",\n  \"phoneNumber\": \"09123456789\",\n  \"address\": \"Davao City\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/patients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"patients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Patient",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"UpdatedMark\",\n  \"lastName\": \"Clarde\",\n  \"email\": \"mark_updated@example.com\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/patients/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"patients",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Patient",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/patients/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"patients",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Visits",
+			"item": [
+				{
+					"name": "Create Visit",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"visitDate\": \"2025-07-14T10:00:00.000Z\",\n  \"visitType\": \"Home\",\n  \"notes\": \"Initial checkup\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/patients/:patientId/visits",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"patients",
+								":patientId",
+								"visits"
+							],
+							"variable": [
+								{
+									"key": "patientId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Visits of a Patient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/patients/:patientId/visits",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"patients",
+								":patientId",
+								"visits"
+							],
+							"variable": [
+								{
+									"key": "patientId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Visit",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notes\": \"Notes updated\",\n  \"visitType\": \"Telehealth\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/visits/:visitId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"visits",
+								":visitId"
+							],
+							"variable": [
+								{
+									"key": "visitId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Visit",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/visits/:visitId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"visits",
+								":visitId"
+							],
+							"variable": [
+								{
+									"key": "visitId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
 }
