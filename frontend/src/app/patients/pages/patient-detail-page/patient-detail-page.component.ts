@@ -17,6 +17,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SuccessDialogComponent } from '../../../shared/components/success-dialog/success-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
+import { Subject } from 'rxjs';
+import { switchMap, takeUntil, tap } from 'rxjs/operators';
+
 @Component({
   selector: 'app-patient-detail-page',
   standalone: true,
@@ -41,6 +44,9 @@ export class PatientDetailPageComponent implements OnInit {
   showModal = false;
   editingVisit: Visit | null = null;
 
+  private destroy$ = new Subject<void>();
+  private loadTrigger$ = new Subject<string>();
+
   constructor(
     private route: ActivatedRoute,
     private patientService: PatientService,
@@ -50,23 +56,41 @@ export class PatientDetailPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadData();
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.loadTrigger$
+        .pipe(
+          tap(() => this.loading = true),
+          switchMap((patientId) =>
+            this.patientService.getPatientWithVisits(patientId)
+          ),
+          takeUntil(this.destroy$)
+        )
+        .subscribe({
+          next: (res) => {
+            this.patient = res.patient;
+            this.visits = res.visits;
+            this.loading = false;
+          },
+          error: (err) => {
+            console.error('Failed to load patient visits', err);
+            this.loading = false;
+          }
+        });
+
+      this.loadData();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadData(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.patientService.getPatientWithVisits(id).subscribe({
-        next: (res) => {
-          this.patient = res.patient;
-          this.visits = res.visits;
-          this.loading = false;
-        },
-        error: (err) => {
-          console.error('Failed to load patient visits', err);
-          this.loading = false;
-        }
-      });
+      this.loadTrigger$.next(id);
     }
   }
 
