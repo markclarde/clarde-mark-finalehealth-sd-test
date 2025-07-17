@@ -224,3 +224,35 @@ mat-header-cell {
     gap: 0.25rem;
   }
 }
+
+.pagination {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-family: inherit;
+}
+
+.pagination button {
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  text-transform: none;
+  min-width: unset;
+  padding: 0.4rem 1.2rem;
+  background-color: #303f9f;
+  color: white !important;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  color: #666;
+}
+
+.pagination span {
+  font-weight: bold;
+  font-size: 0.95rem;
+}

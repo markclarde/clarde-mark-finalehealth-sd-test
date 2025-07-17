@@ -24,6 +24,7 @@
 
   <div class="visits-section" *ngIf="!loading && patient">
     <div class="visits-header">
+      <h3>Total Visits: {{ totalVisits }}</h3>
       <h3>Visit List</h3>
       <button mat-raised-button class="create-btn" (click)="openVisitModal()">+ Create Visit</button>
     </div>
@@ -75,6 +76,17 @@
         <tr mat-header-row *matHeaderRowDef="['visitType', 'visitDate', 'notes', 'actions']"></tr>
         <tr mat-row *matRowDef="let row; columns: ['visitType', 'visitDate', 'notes', 'actions']"></tr>
       </table>
+    </div>
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button mat-button [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+        Previous
+      </button>
+
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+
+      <button mat-button [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+        Next
+      </button>
     </div>
   </div>
 

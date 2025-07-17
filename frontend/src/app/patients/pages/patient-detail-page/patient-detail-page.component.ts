@@ -46,6 +46,9 @@ export class PatientDetailPageComponent implements OnInit {
   showModal = false;
   editingVisit: Visit | null = null;
   showEditPatientModal = false;
+  currentPage: number = 1;
+  totalPages = 1;
+  totalVisits = 0;
 
   private destroy$ = new Subject<void>();
   private loadTrigger$ = new Subject<string>();
@@ -65,14 +68,18 @@ export class PatientDetailPageComponent implements OnInit {
         .pipe(
           tap(() => this.loading = true),
           switchMap((patientId) =>
-            this.patientService.getPatientWithVisits(patientId)
+            this.patientService.getPatientWithVisits(patientId, this.currentPage)
           ),
           takeUntil(this.destroy$)
         )
         .subscribe({
           next: (res) => {
             this.patient = res.patient;
-            this.visits = res.visits.sort((a, b) => new Date(b.visitDate).getTime() - new Date(a.visitDate).getTime()); // descending
+            this.visits = res.visits.sort(
+              (a, b) => new Date(b.visitDate).getTime() - new Date(a.visitDate).getTime()
+            );
+            this.totalPages = res.totalPages;
+            this.totalVisits = res.totalVisits;
             this.loading = false;
           },
           error: (err) => {
@@ -81,6 +88,13 @@ export class PatientDetailPageComponent implements OnInit {
           }
         });
 
+      this.loadData();
+    }
+  }
+
+  changePage(newPage: number): void {
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.currentPage = newPage;
       this.loadData();
     }
   }

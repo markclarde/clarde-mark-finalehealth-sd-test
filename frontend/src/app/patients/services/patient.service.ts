@@ -25,15 +25,31 @@ export class PatientService {
     return this.http.get(`${this.apiUrl}/${id}`);
   }
 
-  getPatientWithVisits(id: string): Observable<{ patient: Patient; visits: Visit[] }> {
-    return this.http.get<{ patient: any; visits: Visit[] }>(
-      `${this.apiUrl}/${id}/visits`
-    ).pipe(
-      map((res) => ({
-        patient: { ...res.patient, id: res.patient._id },
-        visits: res.visits
-      }))
-    );
+  getPatientWithVisits(id: string, page = 1, limit = 8): Observable<{
+    patient: Patient;
+    visits: Visit[];
+    totalVisits: number;
+    totalPages: number;
+  }> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http
+      .get<{
+        patient: any;
+        visits: Visit[];
+        totalVisits: number;
+        totalPages: number;
+      }>(`${this.apiUrl}/${id}/visits`, { params })
+      .pipe(
+        map((res) => ({
+          patient: { ...res.patient, id: res.patient._id },
+          visits: res.visits,
+          totalVisits: res.totalVisits,
+          totalPages: res.totalPages
+        }))
+      );
   }
 
   createPatient(data: {
