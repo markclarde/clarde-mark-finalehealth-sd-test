@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PatientService } from '../../services/patient.service';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
 
 function noFutureDateValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
@@ -26,6 +27,7 @@ export class PatientFormModalComponent implements OnChanges {
   @Output() close = new EventEmitter<'confirm' | 'cancel'>();
 
   patientForm: FormGroup;
+  loading = false;
 
   constructor(private fb: FormBuilder, private patientService: PatientService) {
     this.patientForm = this.fb.group({
@@ -60,28 +62,32 @@ export class PatientFormModalComponent implements OnChanges {
       return;
     }
 
+    this.loading = true;
+
     const formData = this.patientForm.value;
 
     const request$ = this.patient && this.patient.id
       ? this.patientService.updatePatient(this.patient.id, formData)
       : this.patientService.createPatient(formData);
 
-    request$.subscribe({
-      next: () => {
-        this.close.emit('confirm');
-      },
-      error: (err) => {
-        console.error('Submit error:', err);
+    request$
+      .pipe(finalize(() => this.loading = false))
+      .subscribe({
+        next: () => {
+          this.close.emit('confirm');
+        },
+        error: (err) => {
+          console.error('Submit error:', err);
 
-        if (
-          err?.error?.message &&
-          err.error.message.includes('email') &&
-          err.status === 400
-        ) {
-          this.patientForm.get('email')?.setErrors({ emailExists: true });
+          if (
+            err?.error?.message &&
+            err.error.message.includes('email') &&
+            err.status === 400
+          ) {
+            this.patientForm.get('email')?.setErrors({ emailExists: true });
+          }
         }
-      }
-    });
+      });
   }
 
   deletePatient(): void {
