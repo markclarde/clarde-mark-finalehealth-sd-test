@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PatientService } from '../../services/patient.service';
@@ -14,12 +14,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { SuccessDialogComponent } from '../../../shared/components/success-dialog/success-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
+import { Subject } from 'rxjs';
+import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
+
 @Component({
   selector: 'app-patient-list-page',
   standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
+    CommonModule,
+    FormsModule,
     PatientFormModalComponent,
     MatFormFieldModule,
     MatInputModule,
@@ -30,7 +33,7 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
   templateUrl: './patient-list-page.component.html',
   styleUrls: ['./patient-list-page.component.css']
 })
-export class PatientListPageComponent implements OnInit {
+export class PatientListPageComponent implements OnInit, OnDestroy {
   patients: Patient[] = [];
   loading = true;
   searchQuery = '';
@@ -42,29 +45,51 @@ export class PatientListPageComponent implements OnInit {
   selectedPatient: Patient | null = null;
   displayedColumns: string[] = ['name', 'dob', 'email', 'phone', 'address', 'actions'];
 
-  constructor(private patientService: PatientService, private router: Router, private dialog: MatDialog) {}
+  private destroy$ = new Subject<void>();
+  private fetchTrigger$ = new Subject<void>();
+
+  constructor(
+    private patientService: PatientService,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
+    this.fetchTrigger$
+      .pipe(
+        debounceTime(50),
+        tap(() => this.loading = true),
+        switchMap(() =>
+          this.patientService.getPatients(this.page, this.limit, this.searchQuery)
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (res) => {
+          this.patients = res.data.map((p: any) => ({
+            ...p,
+            id: p._id
+          }));
+          this.total = res.meta.total;
+          this.totalPages = res.meta.totalPages;
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Failed to fetch patients', err);
+          this.loading = false;
+        }
+      });
+
     this.fetchPatients();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   fetchPatients(): void {
-    this.loading = true;
-    this.patientService.getPatients(this.page, this.limit, this.searchQuery).subscribe({
-      next: (res) => {
-        this.patients = res.data.map((p: any) => ({
-          ...p,
-          id: p._id
-        }));
-        this.total = res.meta.total;
-        this.totalPages = res.meta.totalPages;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Failed to fetch patients', err);
-        this.loading = false;
-      }
-    });
+    this.fetchTrigger$.next();
   }
 
   onSearchChange(): void {

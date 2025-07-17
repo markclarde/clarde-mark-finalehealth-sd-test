@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PatientService } from '../../services/patient.service';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 
-// Custom validator: disallow future dates
 function noFutureDateValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const inputDate = new Date(control.value);
