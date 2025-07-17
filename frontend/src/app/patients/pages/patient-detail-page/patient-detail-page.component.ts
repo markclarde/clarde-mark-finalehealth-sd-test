@@ -72,7 +72,7 @@ export class PatientDetailPageComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this.patient = res.patient;
-            this.visits = res.visits;
+            this.visits = res.visits.sort((a, b) => new Date(b.visitDate).getTime() - new Date(a.visitDate).getTime()); // descending
             this.loading = false;
           },
           error: (err) => {
