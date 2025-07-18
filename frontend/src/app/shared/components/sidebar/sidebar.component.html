@@ -1,34 +1,11 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
-    #sidenav
-    mode="side"
-    [(opened)]="isSidebarVisible"
-    class="sidenav"
-    [fixedInViewport]="isMobile"
-  >
-    <mat-toolbar class="sidenav-header">PVMS</mat-toolbar>
-
-    <mat-nav-list>
-      <a mat-list-item routerLink="/overview" routerLinkActive="active">
-        <mat-icon>home</mat-icon>
-        <span>Overview</span>
-      </a>
-      <a mat-list-item routerLink="/patients" routerLinkActive="active">
-        <mat-icon>person</mat-icon>
-        <span>Patients</span>
-      </a>
-      <a mat-list-item routerLink="/doctors" routerLinkActive="active">
-        <mat-icon>medical_services</mat-icon>
-        <span>Doctors</span>
-      </a>
-      <a mat-list-item routerLink="/pharmacy" routerLinkActive="active">
-        <mat-icon>local_pharmacy</mat-icon>
-        <span>Pharmacy</span>
-      </a>
-      <a mat-list-item routerLink="/analytics" routerLinkActive="active">
-        <mat-icon>insights</mat-icon>
-        <span>Analytics</span>
-      </a>
-    </mat-nav-list>
-  </mat-sidenav>
-</mat-sidenav-container>
+<div class="sidenav-container">
+  <nav class="sidenav">
+    <div class="sidenav-header">PVMS</div>
+    <ul class="nav-list">
+      <li><a href="/patients" class="nav-item"><span class="icon">🏠</span> Home</a></li>
+      <li><a href="/patients" class="nav-item active" active><span class="icon">🧑‍⚕️</span> Patients</a></li>
+      <li><a href="/patients" class="nav-item"><span class="icon">👨‍⚕️</span> Doctors</a></li>
+      <li><a href="/patients" class="nav-item"><span class="icon">⚙️</span> Settings</a></li>
+    </ul>
+  </nav>
+</div>
