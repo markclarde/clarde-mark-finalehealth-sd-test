@@ -117,9 +117,9 @@ export class PatientListPageComponent implements OnInit, OnDestroy {
     const wasUpdate = !!this.selectedPatient;
     this.selectedPatient = null;
     this.showModal = false;
-    this.fetchPatients();
 
     if (eventType === 'confirm') {
+      this.fetchPatients();
       this.openSuccessModal(wasUpdate ? 'Patient updated successfully!' : 'Patient created successfully!');
     }
   }
