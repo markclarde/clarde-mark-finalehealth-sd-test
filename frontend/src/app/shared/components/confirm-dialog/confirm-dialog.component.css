@@ -27,11 +27,14 @@
   font-weight: bold;
 }
 
-.dialog-actions button.mat-button {
-  color: #555;
-}
-
-.dialog-actions button.mat-raised-button {
+.delete-button {
   background-color: #d32f2f;
   color: white;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #b71c1c;
 }
