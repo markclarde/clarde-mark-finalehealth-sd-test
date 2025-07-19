@@ -69,6 +69,14 @@
   gap: 1rem 2rem;
 }
 
+.detail-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  max-width: 100%;
+}
+
 .patient-details-card p {
   margin: 0;
   font-size: 0.98rem;
@@ -79,6 +87,8 @@
 .patient-details-card strong {
   color: #555;
   font-weight: 600;
+  display: inline-block;
+  min-width: 110px;
 }
 
 .patient-details-card .address-item {
@@ -139,9 +149,10 @@
   padding: 0.75rem 1rem;
   border-bottom: 1px solid #ddd;
   text-align: left;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
 }
 
 .visits-table th {
@@ -199,55 +210,12 @@
   background-color: #b02a37;
 }
 
-@media (max-width: 768px) {
-  .visits-table th,
-  .visits-table td {
-    padding: 0.5rem;
-    font-size: 0.9rem;
-  }
-
-  .actions {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-}
-
 .loading,
 .not-found {
   text-align: center;
   font-size: 1rem;
   color: #888;
   margin-top: 2rem;
-}
-
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .patient-details-card mat-card-content {
-    grid-template-columns: 1fr;
-  }
-
-  .patient-details-card .address-item {
-    grid-column: span 1;
-  }
-
-  .patient-details-card p {
-    font-size: 0.9rem;
-  }
-
-  mat-header-cell,
-  mat-cell {
-    padding: 0.5rem;
-    font-size: 0.9rem;
-  }
-
-  .actions {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
 }
 
 .pagination {
@@ -280,4 +248,56 @@
 .pagination span {
   font-weight: bold;
   font-size: 0.95rem;
+}
+
+/* ---------------- Responsive: Mobile ---------------- */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .patient-details-card mat-card-content {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-details-card .address-item {
+    grid-column: span 1;
+  }
+
+  .patient-details-card p {
+    font-size: 0.9rem;
+  }
+
+  .detail-item {
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+
+  mat-header-cell,
+  mat-cell {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .visits-table th,
+  .visits-table td {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    max-width: 120px;
+  }
+
+  .visits-table td:nth-child(3) { /* Truncate Notes */
+    max-width: 140px;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
