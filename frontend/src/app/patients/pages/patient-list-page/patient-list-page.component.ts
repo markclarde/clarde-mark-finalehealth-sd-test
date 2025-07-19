@@ -44,6 +44,8 @@ export class PatientListPageComponent implements OnInit, OnDestroy {
   showModal = false;
   selectedPatient: Patient | null = null;
   displayedColumns: string[] = ['name', 'dob', 'email', 'phone', 'address', 'actions'];
+  isMobile: boolean = false;
+  openDropdownId: string | null = null;
 
   private destroy$ = new Subject<void>();
   private fetchTrigger$ = new Subject<void>();
@@ -53,6 +55,14 @@ export class PatientListPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialog: MatDialog
   ) {}
+
+  checkIfMobile(): void {
+    this.isMobile = window.innerWidth <= 768;
+  }
+
+  toggleDropdown(id: string): void {
+    this.openDropdownId = this.openDropdownId === id ? null : id;
+  }
 
   ngOnInit(): void {
     this.fetchTrigger$
@@ -79,11 +89,14 @@ export class PatientListPageComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       });
-
+    
+    this.checkIfMobile();
+    window.addEventListener('resize', this.checkIfMobile.bind(this));
     this.fetchPatients();
   }
 
   ngOnDestroy(): void {
+    window.removeEventListener('resize', this.checkIfMobile.bind(this));
     this.destroy$.next();
     this.destroy$.complete();
   }

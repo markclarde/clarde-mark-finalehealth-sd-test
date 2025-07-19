@@ -40,16 +40,25 @@
       </thead>
       <tbody>
         <tr *ngFor="let patient of patients">
-          <td>{{ patient.firstName }} {{ patient.lastName }}</td>
-          <td>{{ patient.dob | date }}</td>
-          <td>{{ patient.email }}</td>
-          <td>{{ patient.phoneNumber }}</td>
-          <td>{{ patient.address }}</td>
-          <td>
-            <div class="actions">
+          <td data-label="Name">{{ patient.firstName }} {{ patient.lastName }}</td>
+          <td data-label="Birthdate">{{ patient.dob | date }}</td>
+          <td data-label="Email">{{ patient.email }}</td>
+          <td data-label="Phone">{{ patient.phoneNumber }}</td>
+          <td data-label="Address">{{ patient.address }}</td>
+          <td data-label="Actions">
+            <div class="actions" *ngIf="!isMobile">
               <button class="view-btn" (click)="onView(patient.id)">View</button>
               <button class="edit-btn" (click)="onEdit(patient)">Edit</button>
               <button class="delete-btn" (click)="onDelete(patient.id)">Delete</button>
+            </div>
+
+            <div class="dropdown-actions" *ngIf="isMobile">
+              <button class="dropdown-toggle" (click)="toggleDropdown(patient.id)">⋮</button>
+              <div class="dropdown-menu" *ngIf="openDropdownId === patient.id">
+                <button (click)="onView(patient.id)">View</button>
+                <button (click)="onEdit(patient)">Edit</button>
+                <button (click)="onDelete(patient.id)">Delete</button>
+              </div>
             </div>
           </td>
         </tr>
