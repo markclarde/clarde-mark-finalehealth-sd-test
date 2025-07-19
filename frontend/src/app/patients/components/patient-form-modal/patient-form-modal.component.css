@@ -85,11 +85,11 @@ form input:focus {
 }
 
 .actions button[type="submit"] {
-  background-color: #42a5f5;
-  color: white;
+  background-color: #4cee74;
+  color: #333;
 }
 .actions button[type="submit"]:hover {
-  background-color: #1e88e5;
+  background-color: #12f042;
 }
 
 .actions button[type="button"]:not(.delete-btn) {
