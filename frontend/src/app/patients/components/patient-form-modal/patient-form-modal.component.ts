@@ -29,6 +29,13 @@ export class PatientFormModalComponent implements OnChanges {
   patientForm: FormGroup;
   loading = false;
 
+  private capitalizeWords(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/\b\w/g, char => char.toUpperCase());
+}
+
   constructor(private fb: FormBuilder, private patientService: PatientService) {
     this.patientForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -65,6 +72,10 @@ export class PatientFormModalComponent implements OnChanges {
     this.loading = true;
 
     const formData = this.patientForm.value;
+
+    formData.firstName = this.capitalizeWords(formData.firstName);
+    formData.lastName = this.capitalizeWords(formData.lastName);
+    formData.address = this.capitalizeWords(formData.address);
 
     const request$ = this.patient && this.patient.id
       ? this.patientService.updatePatient(this.patient.id, formData)
