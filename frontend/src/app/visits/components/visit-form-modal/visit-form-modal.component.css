@@ -60,22 +60,33 @@
   font-size: 0.95rem;
   cursor: pointer;
   border: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .cancel-btn {
   background-color: #f0f0f0;
-  color: #555;
+  color: 333;
+}
+
+.cancel-btn:hover {
+  background-color: #e0e0e0;
+  color: #333;
 }
 
 .submit-btn {
-  background-color: #3f51b5;
-  color: white;
+  background-color: #4cee74;
+  color: #333;
+}
+
+.submit-btn:hover {
+  background-color: #12f042;
 }
 
 .submit-btn:disabled {
   background-color: #9fa8da;
   cursor: not-allowed;
 }
+
 
 .modal h2 {
   font-size: 1.25rem;
