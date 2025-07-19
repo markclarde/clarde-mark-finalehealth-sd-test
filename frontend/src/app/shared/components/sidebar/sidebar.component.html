@@ -1,11 +1,18 @@
-<div class="sidenav-container">
+<button 
+  class="sidebar-toggle" 
+  *ngIf="isMobile" 
+  (click)="toggleSidebar()">
+  ☰
+</button>
+
+<div class="sidenav-container" *ngIf="isSidebarVisible">
   <nav class="sidenav">
     <div class="sidenav-header">PVMS</div>
     <ul class="nav-list">
-      <li><a href="/patients" class="nav-item"><span class="icon">🏠</span> Home</a></li>
-      <li><a href="/patients" class="nav-item active" active><span class="icon">👥</span> Patients</a></li>
-      <li><a href="/patients" class="nav-item"><span class="icon">🩺</span> Doctors</a></li>
-      <li><a href="/patients" class="nav-item"><span class="icon">⚙️</span> Settings</a></li>
+      <li><a routerLink="/patients" routerLinkActive="inactive" class="nav-item"><span class="icon">🏠</span> Home</a></li>
+      <li><a routerLink="/patients" routerLinkActive="active" class="nav-item"><span class="icon">👥</span> Patients</a></li>
+      <li><a routerLink="/patients" routerLinkActive="inactive" class="nav-item"><span class="icon">🩺</span> Doctors</a></li>
+      <li><a routerLink="/patients" routerLinkActive="inactive" class="nav-item"><span class="icon">⚙️</span> Settings</a></li>
     </ul>
   </nav>
 </div>
